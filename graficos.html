@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        // *** GRÁFICO SEM FILTRO *** //
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Ano', 'Argentina', 'Bolivia', 'Brasil', 'Chile', 'Colombia', 'Paraguai', 'Peru', 'Uruguai'],
+                ['2020', 1000, 400, 200, 150, 60, 120, 300, 900],
+                ['2021', 170, 360, 250, 380, 90, 175, 500, 200]
+            ]);
+
+           
+            var options = {
+                chart: {
+                    title: 'Treinamentos por pais',
+                    subtitle: ''
+                }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('graficoTodosPaises'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        //** RECARREGAR GRÁFICOS SEM FILTRO **//
+        function ResetTodosAnos() {
+            google.charts.load('current', { 'packages': ['bar'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Ano', 'Argentina', 'Bolivia', 'Brasil', 'Chile', 'Colombia', 'Paraguai', 'Peru', 'Uruguai'],
+                    ['2020', 1000, 400, 200, 150, 60, 120, 300, 900],
+                    ['2021', 170, 360, 250, 380, 90, 175, 500, 200]
+                ]);
+
+                var options = {
+                    chart: {
+                        title: 'Treinamentos por pais',
+                        subtitle: ''
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('graficoTodosPaises'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+        }
+
+        // ** CARREGA O GRÁFICO POR ALIAS **//
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.setOnLoadCallback(drawChart1);
+
+        function drawChart1() {
+            var data = google.visualization.arrayToDataTable([
+                ['Ano', 'ESAB Brasil', 'ESAB Colômbia', 'ESAB Peru', 'Eutectic', 'Gerencial', 'Representantes BR', 'SAE COLOMBIA'],
+                ['2020', 1000, 400, 200, 150, 60, 120, 300],
+                ['2021', 170, 360, 250, 380, 90, 175, 500]
+            ]);
+
+            var options = {
+                chart: {
+                    title: 'Treinamentos por pais alias - ',
+                    subtitle: ''
+                }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('graficoTodosPaisesAlias'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        // ** FILTRO POR ANO **//
+        function graficoPorAno(ano) {
+            google.charts.load('current', { 'packages': ['bar'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            var filtro = [];
+
+            if (ano == "2020") {
+                filtro = ['2020', 1000, 400, 200, 150, 60, 120, 300, 900];
+            } else if (ano == "2021") {
+                filtro = ['2021', 170, 360, 250, 380, 90, 175, 500, 200];
+            } else {
+                ResetTodosAnos();
+            }
+
+            console.log(filtro);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Ano', 'Argentina', 'Bolivia', 'Brasil', 'Chile', 'Colombia', 'Paraguai', 'Peru', 'Uruguai'],
+                    filtro
+
+                ]);
+
+                var options = {
+                    chart: {
+                        title: 'Treinamentos por ano - ' + filtro[0],
+                        subtitle: ''
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('graficoTodosPaises'));
+
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+        }
+
+
+    </script>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mb-2">
+            <select id="ano" class="form-select" onchange="filtroAno()">
+                <option value="">Todos Anos</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+            </select>
+            <select id="pais" class="form-select">
+                <option value="">Todos Países</option>
+                <option value="ar">Argentina</option>
+                <option value="bol">Bolivia</option>
+                <option value="br">Brasil</option>
+                <option value="ch">Chile</option>
+                <option value="co">Colombia</option>
+                <option value="pa">Paraguai</option>
+                <option value="pe">Peru</option>
+                <option value="ur">Uruguai</option>
+            </select>
+        </div>
+        <div id="graficoTodosPaises" style="width: 800px; height: 500px;"></div>
+
+        <div id="graficoTodosPaisesAlias" style="width: 800px; height: 500px;"></div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script>
+        function filtroAno() {
+            var x = document.getElementById("ano").value;
+            graficoPorAno(x);
+        }
+    </script>
+</body>
+
+</html>
