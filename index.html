@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="public/style.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="js/carregaTodosDados.js"></script>
+    <script type="text/javascript" src="js/carregaDadosPorAno.js"></script>
+    <script type="text/javascript" src="js/carregaDadosPorPais.js"></script>
+    <script type="text/javascript" src="js/carregaTodosDadosAlias.js"></script>
+    <script type="text/javascript" src="js/carregadosPizzaAlunos.js"></script>
+    <script type="text/javascript" src="js/carregadosPizzaEquipamentos.js"></script>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <form class="row g-3">
+
+
+                <div class="col-md-4">
+                    <label for="inputCity" class="form-label">País:</label>
+                    <select id="pais" class="form-select" onchange="filtroPais()">
+                        <option value="">Todos Países</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Chile">Chile</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Paraguai">Paraguai</option>
+                        <option value="Peru">Peru</option>
+                        <option value="Uruguai">Uruguai</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Ano:</label>
+                    <select id="ano" class="form-select" onchange="filtroAno()">
+                        <option value="">Todos Anos</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">Perfil:</label>
+                    <select id="perfil" class="form-select" onchange="filtroPerfil()">
+                        <option value="">Todos Perfis</option>
+                        <option value="Argentina">ESAB Argentina</option>
+                        <option value="Brasil">ESAB Brasil</option>
+                        <option value="Colombia">ESAB Colombia</option>
+                        <option value="Peru">ESAB Peru</option>
+                        <option value="Eutectic">Eutectic</option>
+                        <option value="Gerencial">Gerencial</option>
+                        <option value="Representantes">Representantes BR</option>
+                        <option value="SAE_COLOMBIA">SAE COLOMBIA</option>
+                    </select>
+                </div>
+            </form>
+            <div class="d-grid gap-2">
+            </div>
+        </div>
+        <!--DIVS DOS GRÁFICOS -->
+        <div class="row">
+            <div id="graficoTodosPaises" style="width: 900px;height: 450px;"></div>
+        </div>
+
+        <div class="row">
+            <div id="graficoTodosPerfis" style="width: 900px;height: 450px;"></div>
+        </div>
+
+        <div class="row">
+            <div id="pizzaPorAlunos" style="width: 450px; height: 500px;"></div>
+
+            <div id="pizzaPorEquipamentos" style="width: 450px; height: 500px;"></div>
+        </div>
+        <div class="row">
+            <h6>LISTAGEM DE CAPACITAÇÃO</h6>
+            <div class="tableFixHead" id="capacitacao">
+                <table class="table" id="cap">
+                    <thead class="table-dark">
+                        <th class="text-center">SAE</th>
+                        <th class="text-center">Região</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Cidade</th>
+                        <th class="text-center">Realizou</th>
+                        <th class="text-center">Capacitação</th>
+                        <th class="text-center">Treinados</th>
+                        <th class="text-center">
+                            <button type="button" onclick="funcCapacitacao()" class="btn btn-primary btn-sm">Listagem
+                                Completa</button>
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr id="ar">
+                            <td class="text-center">Empresa Argentina</td>
+                            <td class="text-center">Sul</td>
+                            <td class="text-center">SC</td>
+                            <td class="text-center">Lages/SC</td>
+                            <td class="text-center">Sim</td>
+                            <td class="text-center">100%</td>
+                            <td class="text-center">100%</td>
+                        </tr>
+                        <tr id="br">
+                            <td class="text-center">Empresa Brasil</td>
+                            <td class="text-center">Sul</td>
+                            <td class="text-center">RS</td>
+                            <td class="text-center">Canoas/RS</td>
+                            <td class="text-center">Não</td>
+                            <td class="text-center">30%</td>
+                            <td class="text-center">50%</td>
+                        </tr>
+                        <tr id="co">
+                            <td class="text-center">Empresa Colombia</td>
+                            <td class="text-center">Sul</td>
+                            <td class="text-center">SC</td>
+                            <td class="text-center">Lages/SC</td>
+                            <td class="text-center">Sim</td>
+                            <td class="text-center">100%</td>
+                            <td class="text-center">100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+       
+        <div class="row">
+            <h6>LISTAGEM DE SAE'S E EQUIPAMENTOS</h6>
+            <div class="tableFixHead" id="equip">
+                <table class="table">
+                    <thead class="table-dark">
+                        <th class="text-center">Equipamento</th>
+                        <th class="text-center">Empresa</th>
+                        <th class="text-center">Região</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Cidade</th>
+                        <th class="text-center">Realizado</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center align-middle">Equipamento 1</td>
+                            <td colspan="5">
+                                <table class="table">
+                                    <tr class="border border-success">
+                                        <td class="text-left">Empresa 1</td>
+                                        <td class="text-left">Sul</td>
+                                        <td class="text-center">RS</td>
+                                        <td class="text-center">Canoas/RS</td>
+                                        <td class="text-center text-white bg-success">SIM</td>
+                                    </tr>
+                                    <tr class="border border-success">
+                                        <td class="text-left">Empresa 2</td>
+                                        <td class="text-left">Sul</td>
+                                        <td class="text-center">RS</td>
+                                        <td class="text-center">Canoas/RS</td>
+                                        <td class="text-center text-white bg-success">SIM</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center align-middle">Equipamento 2</td>
+                            <td colspan="5">
+                                <table class="table">
+                                    <tr class="border border-danger">
+                                        <td class="text-left">Empresa 2</td>
+                                        <td class="text-left">Sul</td>
+                                        <td class="text-center">RS</td>
+                                        <td class="text-center">Canoas/RS</td>
+                                        <td class="text-center text-white bg-danger">NÃO</td>
+                                    </tr>
+                                    <tr class="border border-success">
+                                        <td class="text-left">Empresa 3</td>
+                                        <td class="text-left">Sul</td>
+                                        <td class="text-center">RS</td>
+                                        <td class="text-center">Lages/SC</td>
+                                        <td class="text-center text-white bg-success">SIM</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+        <div class="container">
+            <h2>Filterable Table</h2>
+            <p>Type something in the input field to search the table for first names, last names or emails:</p>  
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+            <br>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody id="myTable">
+                <tr>
+                  <td>John</td>
+                  <td>Doe</td>
+                  <td>john@example.com</td>
+                </tr>
+                <tr>
+                  <td>Mary</td>
+                  <td>Moe</td>
+                  <td>mary@mail.com</td>
+                </tr>
+                <tr>
+                  <td>July</td>
+                  <td>Dooley</td>
+                  <td>july@greatstuff.com</td>
+                </tr>
+                <tr>
+                  <td>Anja</td>
+                  <td>Ravendale</td>
+                  <td>a_r@test.com</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p>Note that we start the search in tbody, to prevent filtering the table headers.</p>
+          </div>
+          
+          <script>
+          $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+          </script>
+          
+    <script>
+        function filtroAno() {
+            var x = document.getElementById("ano").value;
+            graficoPorAno(x);
+            graficoPerfilPorAno(x);
+            graficoPizzaAlunoAno(x);
+            graficoPizzaEquipamentosAno(x);
+
+            if (x == "2020") {
+                $("#co").toggle();
+                $("#coo").toggle();
+            } else if (x == "2021") {
+                $("#ar").toggle();
+                $("#arr").toggle();
+            }
+        }
+
+        function filtroPais() {
+            var x = document.getElementById("pais").value;
+            graficoPorPais(x);
+            graficoPorPerfilPais(x);
+            graficoPizzaAlunoPais(x);
+            graficoPizzaEquipamentosPais(x);
+
+            if (x == "Argentina") {
+                $("#br").toggle();
+                $("#co").toggle();
+                $("#brr").toggle();
+                $("#coo").toggle();
+            } else if (x == "Brasil") {
+                $("#ar").toggle();
+                $("#co").toggle();
+                $("#arr").toggle();
+                $("#coo").toggle();
+            } else if (x == "Colombia") {
+                $("#ar").toggle();
+                $("#br").toggle();
+                $("#brr").toggle();
+                $("#arr").toggle();
+            }
+        }
+
+        function funcVoltar(){
+            $("#capCompleta").toggle();
+
+            var container = document.getElementById("capacitacao");
+            container.innerHTML = [
+                '<table class="table" id="capCompleta">',
+                '<thead class="table-dark">',
+                '<th class="text-center">SAE</th>',
+                '<th class="text-center">Região</th>',
+                '<th class="text-center">Estado</th>',
+                '<th class="text-center">Cidade</th>',
+                '<th class="text-center">Realizou</th>',
+                '<th class="text-center">Capacitação</th>',
+                '<th class="text-center">Treinados</th>',
+                '<th class="text-center"><button type="button" onclick="funcCapacitacao()" class="btn btn-primary btn-sm">Listagem Completa</button></th>',
+                '</thead>',
+                '<tbody>',
+                '<tr id="ar">',
+                '<td class="text-center">Empresa Argentina</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr id="br">',
+                '<td class="text-center">Empresa Brasil</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">RS</td>',
+                '<td class="text-center">Canoas/RS</td>',
+                '<td class="text-center">Não</td>',
+                '<td class="text-center">30%</td>',
+                '<td class="text-center">50%</td>',
+                '</tr>',
+                '<tr  id="co">',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '</tbody>',
+                '</table>',
+            ].join("\n");
+        }
+
+        function funcCapacitacao() {
+            $("#cap").toggle();
+
+            var container = document.getElementById("capacitacao");
+            container.innerHTML = [
+                '<table class="table" id="capCompleta">',
+                '<thead class="table-dark">',
+                '<th class="text-center">SAE</th>',
+                '<th class="text-center">Região</th>',
+                '<th class="text-center">Estado</th>',
+                '<th class="text-center">Cidade</th>',
+                '<th class="text-center">Realizou</th>',
+                '<th class="text-center">Capacitação</th>',
+                '<th class="text-center">Treinados</th>',
+                '<th class="text-center"><button type="button" onclick="funcVoltar()" class="btn btn-primary btn-sm">Voltar</button></th>',
+                '</thead>',
+                '<tbody>',
+                '<tr id="ar">',
+                '<td class="text-center">Empresa Argentina</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr id="br">',
+                '<td class="text-center">Empresa Brasil</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">RS</td>',
+                '<td class="text-center">Canoas/RS</td>',
+                '<td class="text-center">Não</td>',
+                '<td class="text-center">30%</td>',
+                '<td class="text-center">50%</td>',
+                '</tr>',
+                '<tr  id="co">',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr>',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '<tr >',
+                '<td class="text-center">Empresa Colombia</td>',
+                '<td class="text-center">Sul</td>',
+                '<td class="text-center">SC</td>',
+                '<td class="text-center">Lages/SC</td>',
+                '<td class="text-center">Sim</td>',
+                '<td class="text-center">100%</td>',
+                '<td class="text-center">100%</td>',
+                '</tr>',
+                '</tbody>',
+                '</table>',
+            ].join("\n");
+        }
+    </script>
+</body>
+
+</html>
